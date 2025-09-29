@@ -1,0 +1,31 @@
+{
+  "name": "agent-eyes",
+  "version": "0.1.0",
+  "description": "Eyes for Agents: control Chromium via Playwright with visual/DOM/a11y/network/console streams for autonomous agents.",
+  "type": "module",
+  "exports": "./src/index.js",
+  "main": "./src/index.js",
+  "files": [
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "lint": "echo 'No linter configured'",
+    "test": "node examples/basic.mjs || true",
+    "test:webgpu": "node examples/test-webgpu.mjs",
+    "test:webgpu:server": "node examples/test-webgpu-server.mjs"
+  },
+  "keywords": ["playwright", "browser", "automation", "agents", "webgl", "webgpu", "a11y", "dom", "screenshot"],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "eventemitter3": "^5.0.1",
+    "pino": "^9.4.0",
+    "playwright": "^1.46.0",
+    "zod": "^3.23.8"
+  }
+}
