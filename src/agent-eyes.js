@@ -33,6 +33,7 @@ const OptionsSchema = z.object({
   trace: z.object({ enabled: z.boolean().optional(), file: z.string().optional() }).optional(),
   browserChannel: z.string().optional(),
   browserFlags: z.array(z.string()).optional(),
+  canvasHook: z.boolean().optional(),
 });
 
 /**
@@ -61,7 +62,7 @@ export class AgentEyes extends EventEmitter {
       throw new BadInputError('Invalid options', { data: parsed.error.flatten() });
     }
     /** @type {AgentEyesOptions} */
-    this.options = { headless: true, viewport: DEFAULT_VIEWPORT, blockPrivateIPs: true, ...options };
+    this.options = { headless: true, viewport: DEFAULT_VIEWPORT, blockPrivateIPs: true, canvasHook: true, ...options };
 
     // Logger
     const level = this.options.log?.level === 'silent' ? 'silent' : (this.options.log?.level || 'info');
@@ -98,7 +99,9 @@ export class AgentEyes extends EventEmitter {
     const page = await context.newPage();
     this.page = page;
 
-    await injectCanvasHook(page);
+    if (this.options.canvasHook !== false) {
+      await injectCanvasHook(page);
+    }
 
     // Console events
     page.on('console', (msg) => {

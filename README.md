@@ -71,6 +71,7 @@ Options:
 - `log?: { level?: 'silent'|'error'|'warn'|'info'|'debug' }`
 - `frameStream?: { fps?: number, scaleWidth?: number }`
 - `trace?: { enabled?: boolean, file?: string }` (JSONL trace)
+- `canvasHook?: boolean` (default true; disable when hook interferes with rendering)
 
 Events:
 - `frame` → `Buffer` (webp), ~2–4 fps
@@ -117,7 +118,7 @@ Retry policy: 3 attempts with exponential backoff for fragile actions.
 
 ## Canvas/WebGL/WebGPU
 
-On `open()`, an init script hooks `HTMLCanvasElement.getContext` to detect `webgl`, `webgl2`, `gpupresent`, and `webgpu`. It records the last canvas and stores a `toDataURL('image/webp', 0.8)` preview every ~1s as `window.__EYES.canvasFrame`. `eyes.canvas()` returns this data URL (or `null`). The `frame` event is separate — a low-FPS page screenshot preview.
+On `open()`, an init script hooks `HTMLCanvasElement.getContext` to detect `webgl`, `webgl2`, `gpupresent`, and `webgpu`. It records the last canvas and stores a `toDataURL('image/webp', 0.8)` preview every ~1s as `window.__EYES.canvasFrame`. `eyes.canvas()` returns this data URL (or `null`). The `frame` event is separate — a low-FPS page screenshot preview. Pass `canvasHook: false` if this instrumentation interferes with advanced pipelines (e.g., some WebGPU demos).
 
 For environments where WebGPU requires additional flags, pass them via `browserFlags` or switch channel via `browserChannel`:
 
@@ -131,7 +132,7 @@ const eyes = new AgentEyes({
 
 ## Examples
 
-See `examples/basic.mjs` and `examples/orchestrate.mjs`.
+See `examples/basic.mjs`, `examples/orchestrate.mjs`, and `examples/webgpu-capture.mjs`.
 
 ## Notes
 
